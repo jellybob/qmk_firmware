@@ -35,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = LAYOUT_ergodox(  // layer 0 : default
         // left hand
-        KC_EQL,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_LEFT,
+        HYPR(KC_M),     KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_LEFT,
         KC_DELT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   TG(SYMB),
         KC_BSPC,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSFT,        CTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_B,   ALL_T(KC_NO),
@@ -157,11 +157,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   return MACRO_NONE;
 };
 
-// Runs just one time when the keyboard initializes.
-void matrix_init_user(void) {
-
-};
-
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
 
@@ -184,4 +179,15 @@ void matrix_scan_user(void) {
       break;
   }
 
+};
+
+// Respond to changes in LED states from the connected
+// computer. Used to toggle status LEDs in reaction to
+// state changes such as mic mute.
+void led_set_user(uint8_t usb_led) {
+  if (usb_led & (1<<USB_LED_SCROLL_LOCK)) {
+    rgblight_sethsv_red_at(14);
+  } else {
+    rgblight_setrgb_at(0, 0, 0, 14);
+  }
 };
